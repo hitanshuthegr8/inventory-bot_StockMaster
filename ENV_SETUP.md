@@ -15,6 +15,10 @@
 # Get your API key from: https://aistudio.google.com/app/apikey
 GEMINI_API_KEY=your_gemini_api_key_here
 
+# Gemini Model Name (Optional - defaults to 'gemini-pro')
+# Available models: 'gemini-pro', 'gemini-1.5-pro-latest', 'gemini-1.5-flash-latest'
+GEMINI_MODEL=gemini-pro
+
 # ============================================
 # MySQL Database Configuration
 # ============================================

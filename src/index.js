@@ -1,4 +1,3 @@
-
 // ============================================
 // 📁 FILE: src/index.js
 // ============================================
@@ -38,8 +37,16 @@ app.post('/api/query', async (req, res) => {
     });
   }
 
+  if (question.trim().length < 3) {
+    return res.status(400).json({
+      success: false,
+      error: 'Question is too short. Please be more specific.'
+    });
+  }
+
   try {
-    console.log(`\n📝 Question: "${question}"`);
+    console.log(`\n${'='.repeat(50)}`);
+    console.log(`📝 Question: "${question}"`);
 
     // Step 1: Generate SQL
     const sql = await generateSQL(question);
@@ -53,7 +60,7 @@ app.post('/api/query', async (req, res) => {
     const formatted = formatResult(question, results, sql);
 
     const duration = Date.now() - startTime;
-    console.log(`✅ Completed in ${duration}ms`);
+    console.log(`✅ Completed in ${duration}ms\n`);
 
     res.json({
       success: true,
@@ -67,19 +74,41 @@ app.post('/api/query', async (req, res) => {
     });
 
   } catch (error) {
-    console.error(`❌ Error: ${error.message}`);
+    const duration = Date.now() - startTime;
+    console.error(`❌ Error: ${error.message}\n`);
     
-    res.status(error.message.includes('read-only') ? 400 : 500).json({
+    const statusCode = 
+      error.message.includes('read-only') ? 400 :
+      error.message.includes('cannot answer') ? 400 :
+      error.message.includes('too short') ? 400 :
+      error.message.includes('valid SELECT') ? 400 : 500;
+    
+    res.status(statusCode).json({
       success: false,
       question,
       error: error.message,
+      suggestion: getSuggestion(error.message),
       meta: {
-        duration: `${Date.now() - startTime}ms`,
+        duration: `${duration}ms`,
         timestamp: new Date().toISOString()
       }
     });
   }
 });
+
+// Helper function for error suggestions
+function getSuggestion(errorMessage) {
+  if (errorMessage.includes('valid SELECT')) {
+    return 'Try rephrasing your question. Example: "What is the stock of iPhone 13?"';
+  }
+  if (errorMessage.includes('incomplete')) {
+    return 'Your question may be too vague. Try being more specific about what data you need.';
+  }
+  if (errorMessage.includes('read-only')) {
+    return 'I can only answer questions, not make changes. Ask about stock levels, valuations, etc.';
+  }
+  return null;
+}
 
 // SQL-only endpoint (for debugging)
 app.post('/api/sql', async (req, res) => {
@@ -113,6 +142,24 @@ app.post('/api/execute', async (req, res) => {
   }
 });
 
+// Test endpoint to verify Gemini API connection
+app.get('/api/test-ai', async (req, res) => {
+  try {
+    const sql = await generateSQL('list all warehouses');
+    res.json({ 
+      success: true, 
+      message: 'Gemini API is working!',
+      testQuery: sql 
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      success: false, 
+      error: error.message,
+      hint: 'Check your GEMINI_API_KEY in .env'
+    });
+  }
+});
+
 // Graceful shutdown
 process.on('SIGINT', async () => {
   console.log('\n🛑 Shutting down...');
@@ -136,6 +183,7 @@ app.listen(config.server.port, () => {
 ║     POST /api/query   - Natural language query    ║
 ║     POST /api/sql     - Generate SQL only         ║
 ║     POST /api/execute - Execute raw SQL           ║
+║     GET  /api/test-ai - Test Gemini connection    ║
 ║     GET  /health      - Health check              ║
 ╚═══════════════════════════════════════════════════╝
   `);

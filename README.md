@@ -45,7 +45,7 @@ PORT=3000
 mysql -u root -p < db/seed.sql
 ```
 
-### 5. Run
+### 5. Run Backend
 
 ```bash
 # Development (with auto-reload)
@@ -54,6 +54,20 @@ npm run dev
 # Production
 npm start
 ```
+
+### 6. Test with Frontend
+
+The project includes a ready-to-use frontend interface:
+
+1. **Start the backend** (from step 5)
+
+2. **Open the frontend**:
+   - Open `frontend/index.html` in your browser, or
+   - Use a local server (see `frontend/README.md` for details)
+
+3. **Start querying!** Ask natural language questions and see results instantly.
+
+See `frontend/README.md` for detailed frontend usage instructions.
 
 ## API Endpoints
 
@@ -107,7 +121,12 @@ Health check endpoint.
 
 ```
 inventory-bot/
-├── src/
+├── frontend/             # Frontend interface (HTML/CSS/JS)
+│   ├── index.html        # Main HTML file
+│   ├── css/              # Stylesheets
+│   ├── js/               # JavaScript files
+│   └── README.md         # Frontend documentation
+├── src/                  # Backend source code
 │   ├── index.js          # Express server & routes
 │   ├── config.js         # Environment configuration
 │   ├── schema.js         # Database schema & AI prompt

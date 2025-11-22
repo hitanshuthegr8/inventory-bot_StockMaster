@@ -1,0 +1,50 @@
+# ============================================
+# Inventory Bot - Quick Commands
+# ============================================
+
+# 1. Navigate to project
+cd C:\Users\HP\Desktop\Secret\Project\inventory-bot
+
+# 2. Install dependencies
+npm install
+
+# 3. Create .env file (manually create in project root)
+# GEMINI_API_KEY=your_api_key
+# DB_HOST=localhost
+# DB_PORT=3306
+# DB_USER=root
+# DB_PASSWORD=your_password
+# DB_NAME=inventory_db
+# PORT=3000
+
+# 4. Setup database (in MySQL Workbench: open and run db/seed.sql)
+# OR command line:
+mysql -u root -p < db/seed.sql
+
+# 5. Start backend
+npm start
+
+# ============================================
+# Frontend (new terminal):
+# ============================================
+
+# Option 1: Just open frontend/index.html in browser
+
+# Option 2: Python server
+cd frontend
+python -m http.server 8000
+
+# Option 3: Node.js server (install globally first: npm install -g http-server)
+cd frontend
+http-server -p 8000
+
+# ============================================
+# Test commands:
+# ============================================
+
+# Health check
+curl http://localhost:3000/health
+
+# Test query
+curl -X POST http://localhost:3000/api/query -H "Content-Type: application/json" -d "{\"question\":\"List all warehouses\"}"
+

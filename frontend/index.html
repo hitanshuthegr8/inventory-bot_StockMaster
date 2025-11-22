@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Bot - Natural Language Query</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 Inventory Bot</h1>
+            <p class="subtitle">Ask questions in natural language, get inventory data</p>
+        </header>
+
+        <main>
+            <div class="query-section">
+                <form id="queryForm" class="query-form">
+                    <div class="input-group">
+                        <label for="question">Ask a question:</label>
+                        <textarea 
+                            id="question" 
+                            name="question" 
+                            placeholder="e.g., What's the stock of iPhone 13 in Mumbai?"
+                            rows="3"
+                            required
+                        ></textarea>
+                    </div>
+                    <div class="button-group">
+                        <button type="submit" id="submitBtn" class="btn btn-primary">
+                            <span class="btn-text">Query</span>
+                            <span class="btn-loader" style="display: none;">⏳</span>
+                        </button>
+                        <button type="button" id="clearBtn" class="btn btn-secondary">Clear</button>
+                    </div>
+                </form>
+
+                <!-- Example Questions -->
+                <div class="examples">
+                    <p class="examples-title">Try these examples:</p>
+                    <div class="example-chips">
+                        <button class="example-chip" data-question="What's the stock of iPhone 13 in Mumbai?">Stock of iPhone 13 in Mumbai</button>
+                        <button class="example-chip" data-question="Total inventory valuation">Total inventory valuation</button>
+                        <button class="example-chip" data-question="Products below reorder level">Products below reorder level</button>
+                        <button class="example-chip" data-question="Top 5 products by quantity">Top 5 products by quantity</button>
+                        <button class="example-chip" data-question="List all warehouses">List all warehouses</button>
+                        <button class="example-chip" data-question="Stock movements this month">Stock movements this month</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="results" class="results-section" style="display: none;">
+                <div class="result-header">
+                    <h2>Results</h2>
+                    <button id="closeResults" class="btn-icon" title="Close results">×</button>
+                </div>
+
+                <!-- Question Display -->
+                <div class="question-display">
+                    <strong>Question:</strong>
+                    <span id="displayQuestion"></span>
+                </div>
+
+                <!-- Answer Display -->
+                <div class="answer-display">
+                    <div id="answerText" class="answer-text"></div>
+                    <div id="summaryText" class="summary-text"></div>
+                </div>
+
+                <!-- SQL Query Display (Expandable) -->
+                <div class="sql-section">
+                    <button id="toggleSQL" class="btn-toggle-sql">
+                        <span>🔍</span>
+                        <span>View Generated SQL</span>
+                        <span class="toggle-icon">▼</span>
+                    </button>
+                    <pre id="sqlQuery" class="sql-query" style="display: none;"></pre>
+                </div>
+
+                <!-- Data Table -->
+                <div id="dataTable" class="data-table-container" style="display: none;">
+                    <h3>Data</h3>
+                    <div class="table-wrapper">
+                        <table id="resultTable">
+                            <thead id="tableHead"></thead>
+                            <tbody id="tableBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="row-count">
+                        <span id="rowCount"></span>
+                    </div>
+                </div>
+
+                <!-- Meta Information -->
+                <div class="meta-info">
+                    <div class="meta-item">
+                        <span class="meta-label">Duration:</span>
+                        <span id="duration"></span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Timestamp:</span>
+                        <span id="timestamp"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error Display -->
+            <div id="error" class="error-section" style="display: none;">
+                <div class="error-header">
+                    <h2>❌ Error</h2>
+                    <button id="closeError" class="btn-icon" title="Close error">×</button>
+                </div>
+                <div id="errorMessage" class="error-message"></div>
+            </div>
+
+            <!-- Connection Status -->
+            <div id="connectionStatus" class="connection-status">
+                <span class="status-indicator" id="statusIndicator">●</span>
+                <span id="statusText">Connecting...</span>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
+
