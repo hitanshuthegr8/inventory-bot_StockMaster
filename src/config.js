@@ -8,7 +8,7 @@ dotenv.config();
 export const config = {
   gemini: {
     apiKey: process.env.GEMINI_API_KEY || 'AIzaSyDHNB6LlRsLVmmv9yPR1LSzWjd6BvI43lA',
-    model: 'gemini-1.5-flash'  // Free tier compatible
+    model: 'gemini-2.5-flash'  // User's model
   },
   db: {
     host: process.env.DB_HOST || 'localhost',

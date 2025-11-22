@@ -7,10 +7,13 @@ import { systemPrompt } from './schema.js';
 
 const genAI = new GoogleGenerativeAI(config.gemini.apiKey);
 
-// List of model names to try (free tier models)
+// List of model names to try (including gemini-2.5-flash and fallbacks)
 const MODEL_FALLBACKS = [
+  'gemini-2.5-flash',
+  'gemini-2.0-flash-exp',
   'gemini-1.5-flash-latest',
   'gemini-1.5-pro-latest',
+  'gemini-1.5-flash',
   'gemini-1.5-pro',
   'gemini-pro'
 ];
